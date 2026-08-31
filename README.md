@@ -15,30 +15,30 @@ demo/              fixture seeds
 docs/              plan + design notes
 ```
 
-## Local setup (on macOS)
+## Local setup (macOS)
 
-Prereqs: Node 20+, Python 3.11+, pnpm (`corepack enable && corepack prepare pnpm@9 --activate`).
+Prereqs: Node 20+, npm 10+, Python 3.11+.
 
 ```bash
 # 1. Web
 cd apps/web
 cp .env.example .env.local          # fill in Supabase values
-pnpm install
-pnpm dev                            # http://localhost:3000/projects/<fixture-id>
+npm install
+npm run dev                          # http://localhost:3000
 
 # 2. Agent
 cd services/agent
 python3.11 -m venv .venv
 source .venv/bin/activate
 pip install -e .
-cp .env.example .env                # fill in Supabase + AWS values
+cp .env.example .env                 # fill in Supabase + AWS values
 uvicorn overlap.main:app --reload --port 8000
 
 # 3. Verify Day 1 exit criteria
-curl -X POST http://localhost:8000/handoff/<fixture-id>
-# => {"project_name": "Acme Redesign"}
+curl -X POST http://localhost:8000/handoff
+# => {"project_id":"11111111-...","project_name":"Acme Redesign"}
 ```
 
 ## Deploy
-- Web: pushed to Vercel from `apps/web`. Env vars set in the Vercel dashboard.
-- Agent: local for Day 1; App Runner (or Bedrock AgentCore) later.
+- Web: Vercel, `apps/web` as root dir. Deploy when the dashboard is presentable (Day 5).
+- Agent: local for now; App Runner or Bedrock AgentCore later.
