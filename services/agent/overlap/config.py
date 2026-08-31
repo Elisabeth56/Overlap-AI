@@ -1,5 +1,10 @@
 """Environment-backed settings. Read once at import time."""
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# services/agent/.env — always found regardless of the process cwd.
+_ENV = Path(__file__).resolve().parents[1] / ".env"
 
 
 class Settings(BaseSettings):
@@ -10,7 +15,7 @@ class Settings(BaseSettings):
     bedrock_model_id: str = "anthropic.claude-3-5-sonnet-20241022-v2:0"
     fixture_project_id: str = "11111111-1111-1111-1111-111111111111"
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_file=_ENV, extra="ignore")
 
 
 settings = Settings()

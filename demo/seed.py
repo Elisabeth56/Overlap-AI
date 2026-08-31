@@ -19,18 +19,18 @@ if not DB:
 FIXTURE_PROJECT_ID = "11111111-1111-1111-1111-111111111111"
 FIXTURE_USER_ID = "00000000-0000-0000-0000-000000000001"
 
-SQL = """
-insert into users (id, handle, display)
-values (%s, 'elisabeth', 'Elisabeth')
-on conflict (handle) do nothing;
-
-insert into projects (id, name, outgoing_owner_id, status)
-values (%s, 'Acme Redesign', %s, 'draft')
-on conflict (id) do nothing;
-"""
-
 with psycopg.connect(DB) as conn, conn.cursor() as cur:
-    cur.execute(SQL, (FIXTURE_USER_ID, FIXTURE_PROJECT_ID, FIXTURE_USER_ID))
+    cur.execute(
+        "insert into users (id, handle, display) values (%s, 'elisabeth', 'Elisabeth') "
+        "on conflict (handle) do nothing",
+        (FIXTURE_USER_ID,),
+    )
+    cur.execute(
+        "insert into projects (id, name, outgoing_owner_id, status) "
+        "values (%s, 'Acme Redesign', %s, 'draft') "
+        "on conflict (id) do nothing",
+        (FIXTURE_PROJECT_ID, FIXTURE_USER_ID),
+    )
     conn.commit()
 
 print(f"seeded project {FIXTURE_PROJECT_ID}")

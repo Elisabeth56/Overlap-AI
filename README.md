@@ -8,7 +8,7 @@ Repo context for Claude Code lives in [`CLAUDE.md`](CLAUDE.md).
 
 ## Layout
 ```
-apps/web/          Next.js 14 dashboard + live status page
+apps/web/          Next.js 16 dashboard + live status page
 services/agent/    Python 3.11 + FastAPI + Strands Agents SDK
 infra/             schema.sql + AgentCore terraform
 demo/              fixture seeds
